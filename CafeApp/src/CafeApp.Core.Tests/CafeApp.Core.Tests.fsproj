@@ -45,7 +45,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CafeApp.Core.Tests.fs" />
     <Compile Include="CafeAppTestsDSL.fs" />
     <Compile Include="OpenTabTests.fs" />
   </ItemGroup>

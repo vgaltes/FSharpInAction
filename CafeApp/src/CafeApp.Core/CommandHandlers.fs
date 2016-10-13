@@ -1,4 +1,5 @@
 module CommandHandlers
+open Commands
 open States
 open Events
 open Domain
@@ -6,7 +7,8 @@ open System
 
 let execute state command =
     match command with
-    | _ -> [TabOpened {Id = Guid.NewGuid(); TableNumber = 1}]
+    | OpenTab tab -> [TabOpened tab]
+    | _ -> failwith "Todo"
 
 let evolve state command =
     let events = execute state command
