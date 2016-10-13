@@ -1,1 +1,0 @@
-namespace CafeApp.Core.Dummy
