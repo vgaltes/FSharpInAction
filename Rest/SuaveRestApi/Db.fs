@@ -19,3 +19,17 @@ module Db =
         let newPerson = {person with Id = id}
         peopleStorage.Add(id, newPerson)
         newPerson
+
+    let updatePersonById personId personToBeUpdated =
+        if peopleStorage.ContainsKey(personId) then
+            let updatedPerson = {personToBeUpdated with Id = personId}
+            peopleStorage.[personId] <- updatedPerson
+            Some updatedPerson
+        else
+            None
+
+    let updatePerson personToBeUpdated =
+        updatePersonById personToBeUpdated.Id personToBeUpdated
+
+    let deletePerson personId =
+        peopleStorage.Remove(personId) |> ignore

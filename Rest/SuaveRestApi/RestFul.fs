@@ -6,6 +6,7 @@ module RestFul =
     open Suave.Successful
     open Suave.Operators
     open Suave.Filters
+    open Suave.RequestErrors
     open Newtonsoft.Json
     open Newtonsoft.Json.Serialization
 
@@ -13,6 +14,8 @@ module RestFul =
     type RestResource<'a> = {
         GetAll : unit -> 'a seq
         Create: 'a -> 'a
+        Update: 'a -> 'a option
+        Delete: int -> unit
     }
 
     // 'a -> WebPart
@@ -38,9 +41,25 @@ module RestFul =
     let rest resourceName resource = 
         let resourcePath = "/" + resourceName
         let getAll = warbler (fun _ -> resource.GetAll () |> JSON)
-        path resourcePath >=> choose[
-            GET >=> getAll
-            POST >=> request (getResourceFromReq >> resource.Create >> JSON)
+        let badRequest = BAD_REQUEST "Resource not found"
+        let handleRequest requestError = function
+            | Some r -> r |> JSON
+            | None -> requestError
+        let resourceIdPath =
+            let path = resourcePath + "/%d"
+            new PrintfFormat<(int -> string), unit, string, string, int>(path)
+
+        let deleteResourceById id =
+            resource.Delete id
+            NO_CONTENT
+            
+        choose [
+            path resourcePath >=> choose[
+                GET >=> getAll
+                POST >=> request (getResourceFromReq >> resource.Create >> JSON)
+                PUT >=> request (getResourceFromReq >> resource.Update >> handleRequest badRequest)
+            ]
+            DELETE >=> pathScan resourceIdPath deleteResourceById
         ]
         
 
