@@ -16,6 +16,7 @@ module RestFul =
         Create: 'a -> 'a
         Update: 'a -> 'a option
         Delete: int -> unit
+        GetById: int -> 'a option
     }
 
     // 'a -> WebPart
@@ -42,6 +43,7 @@ module RestFul =
         let resourcePath = "/" + resourceName
         let getAll = warbler (fun _ -> resource.GetAll () |> JSON)
         let badRequest = BAD_REQUEST "Resource not found"
+        let notFound = NOT_FOUND "Resource not found"
         let handleRequest requestError = function
             | Some r -> r |> JSON
             | None -> requestError
@@ -52,6 +54,9 @@ module RestFul =
         let deleteResourceById id =
             resource.Delete id
             NO_CONTENT
+
+        let getResourceById =
+            resource.GetById >> handleRequest (NOT_FOUND "Resource not found")
             
         choose [
             path resourcePath >=> choose[
@@ -60,6 +65,7 @@ module RestFul =
                 PUT >=> request (getResourceFromReq >> resource.Update >> handleRequest badRequest)
             ]
             DELETE >=> pathScan resourceIdPath deleteResourceById
+            GET >=> pathScan resourceIdPath getResourceById
         ]
         
 
