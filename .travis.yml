@@ -1,6 +1,7 @@
 # CafeApp/.travis.yml
 language: csharp
+before_script: cd CafeApp
 script:
-    - ./CafeApp/build.sh RunUnitTests
+    - ./build.sh RunUnitTests
 mono:
     - latest
