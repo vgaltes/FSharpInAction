@@ -1,0 +1,5 @@
+source https://nuget.org/api/v2
+
+nuget Suave
+nuget Newtonsoft.Json
+nuget System.IdentityModel.Tokens.Jwt
