@@ -17,6 +17,8 @@ module RestFul =
         Update: 'a -> 'a option
         Delete: int -> unit
         GetById: int -> 'a option
+        UpdateById: int -> 'a -> 'a option
+        Exists: int -> bool
     }
 
     // 'a -> WebPart
@@ -56,8 +58,14 @@ module RestFul =
             NO_CONTENT
 
         let getResourceById =
-            resource.GetById >> handleRequest (NOT_FOUND "Resource not found")
+            resource.GetById >> handleRequest notFound
+
+        let updateResourceById id =
+            request (getResourceFromReq >> (resource.UpdateById id) >> handleRequest notFound)
             
+        let resourceExists id =
+            if resource.Exists id then OK "" else notFound
+
         choose [
             path resourcePath >=> choose[
                 GET >=> getAll
@@ -66,6 +74,8 @@ module RestFul =
             ]
             DELETE >=> pathScan resourceIdPath deleteResourceById
             GET >=> pathScan resourceIdPath getResourceById
+            PUT >=> pathScan resourceIdPath updateResourceById
+            HEAD >=> pathScan resourceIdPath resourceExists
         ]
         
 

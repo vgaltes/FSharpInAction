@@ -39,3 +39,6 @@ module Db =
             Some peopleStorage.[personId]
         else
             None
+
+    let personExists personId =
+        peopleStorage.ContainsKey(personId)
