@@ -7,6 +7,7 @@ open Suave.Successful
 let main argv = 
     let personWebPart = rest "people" {
         GetAll = Db.getPeople
+        Create = Db.createPerson
     }
 
     startWebServer defaultConfig personWebPart
