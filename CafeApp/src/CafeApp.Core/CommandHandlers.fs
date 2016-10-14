@@ -11,10 +11,6 @@ let handleOpenTab tab = function
 | ClosedTab _ -> [TabOpened tab] |> ok
 | _ -> TabAlreadyOpened |> fail
 
-//let handlePlaceOrder order = function
-//| OpenedTab _ -> [OrderPlaced order] |> ok
-//| _ -> failwith "Todo"
-
 let isOrderEmpty order =
     List.isEmpty order.Foods && List.isEmpty order.Drinks
 
@@ -31,7 +27,9 @@ let handlePlaceOrder (order:Order) = function
 
 let handleServeDrink drink tabId = function
     | PlacedOrder order ->
-        [DrinkServed (drink,tabId)] |> ok
+        if List.contains drink order.Drinks then
+            [DrinkServed (drink,tabId)] |> ok
+        else fail (CanNotServeNonOrderedDrink drink)
     | _ -> failwith "Todo"
 
 let execute state command =
