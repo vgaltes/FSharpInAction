@@ -39,10 +39,6 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\paket-files\fsprojects\Chessie\src\Chessie\ErrorHandling.fs">
-      <Paket>True</Paket>
-      <Link>paket-files/ErrorHandling.fs</Link>
-    </Compile>
     <ProjectReference Include="../CafeApp.Core/CafeApp.Core.fsproj">
       <Name>CafeApp.Core.fsproj</Name>
       <Project>{0f1d8a36-8240-4641-a914-ea1e1280094a}</Project>

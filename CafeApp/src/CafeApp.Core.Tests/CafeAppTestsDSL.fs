@@ -11,19 +11,20 @@ let Given (state : State) = state
 
 let When command state = (command, state)
 
-let ThenStateShouldBe (expectedState:State) (command, state) : (Option<Event list>) =
-    let a = evolve state command
-    match a with
-    // Original pattern match.
-    //| Ok _ ->
-          //actualState |> should equal expectedState
-          //events |> Some
-    //| Bad errs ->
-    //    sprintf "Expected : %A, But Actual : %A" expectedState errs.Head
-    //    |> Assert.Fail
-    //    None
-    | Ok(_) -> None
-    | _ -> None
+let log twoTrackInput =
+    let success(x, msgs) = printfn "Correct state"
+    let failure msgs = printf "ERROR. %A" msgs
+    eitherTee
+
+let ThenStateShouldBe expectedState (command, state) =
+    match evolve state command with
+    | Ok((actualState,events),_) ->
+          actualState |> should equal expectedState
+          events |> Some
+    | Bad errs ->
+        sprintf "Expected : %A, But Actual : %A" expectedState errs.Head
+        |> Assert.Fail
+        None
 
 let WithEvents expectedEvents actualEvents =
   match actualEvents with
