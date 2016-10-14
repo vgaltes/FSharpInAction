@@ -7,6 +7,7 @@ open System
 open States
 open Commands
 open Events
+open Errors
 
 let tab = {Id = Guid.NewGuid(); TableNumber = 1}
 let coke = Drink{
@@ -22,3 +23,9 @@ let ``Can place only drinks order`` () =
     |> When (PlaceOrder order)
     |> ThenStateShouldBe (PlacedOrder order)
     |> WithEvents [OrderPlaced order]
+
+[<Test>]
+let ``Can not place an empty order`` () =
+    Given (OpenedTab tab)
+    |> When (PlaceOrder order)
+    |> ShouldFailWith CanNotPlaceEmptyOrder
