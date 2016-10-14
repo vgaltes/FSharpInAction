@@ -47,3 +47,16 @@ let ``Can not serve with closed tab`` () =
     Given(ClosedTab (Some tab.Id))
     |> When (ServeDrink (lemonade, emptyOrder.Tab.Id))
     |> ShouldFailWith CanNotServeWithClosedTab
+
+[<Test>]
+let ``Can serve drink for order containing one drink`` () =
+    let order = {emptyOrder with Drinks=[coke]}
+    let payment = {Tab = order.Tab; Amount = drinkPrice coke}
+
+    Given(PlacedOrder order)
+    |> When (ServeDrink(coke, order.Tab.Id))
+    |> ThenStateShouldBe (ServedOrder order)
+    |> WithEvents [
+        DrinkServed (coke, order.Tab.Id)
+        OrderServed (order, payment)
+    ]

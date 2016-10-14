@@ -25,11 +25,16 @@ let handlePlaceOrder (order:Order) = function
         else [OrderPlaced order] |> ok
     | _ -> failwith "Todo"
 
+let (|NonOrderedDrink|_|) order drink =
+    match List.contains drink order.Drinks with
+    | false -> Some drink
+    | true -> None
+
 let handleServeDrink drink tabId = function
     | PlacedOrder order ->
-        if List.contains drink order.Drinks then
-            [DrinkServed (drink,tabId)] |> ok
-        else fail (CanNotServeNonOrderedDrink drink)
+        match drink with
+        | NonOrderedDrink order _ -> fail (CanNotServeNonOrderedDrink drink)
+        | _ -> [DrinkServed (drink,tabId)] |> ok
     | ServedOrder order ->
         fail OrderAlreadyServed
     | OpenedTab _ -> fail CanNotServeForNonPlacedOrder
