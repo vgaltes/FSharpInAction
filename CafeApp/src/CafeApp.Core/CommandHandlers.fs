@@ -33,6 +33,7 @@ let handleServeDrink drink tabId = function
     | ServedOrder order ->
         fail OrderAlreadyServed
     | OpenedTab _ -> fail CanNotServeForNonPlacedOrder
+    | ClosedTab _ -> fail CanNotServeWithClosedTab
     | _ -> failwith "Todo"
 
 let execute state command =
