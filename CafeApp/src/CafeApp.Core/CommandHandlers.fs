@@ -7,12 +7,13 @@ open System
 open Chessie.ErrorHandling
 open Errors
 
+let handleOpenTab tab = function
+| ClosedTab _ -> [TabOpened tab] |> ok
+| _ -> TabAlreadyOpened |> fail
+
 let execute state command =
     match command with
-    | OpenTab tab -> 
-        match state with 
-        | ClosedTab _ -> [TabOpened tab] |> ok
-        | _ -> TabAlreadyOpened |> fail
+    | OpenTab tab -> handleOpenTab tab state
     | _ -> failwith "Todo"
 
 let evolve state command =
