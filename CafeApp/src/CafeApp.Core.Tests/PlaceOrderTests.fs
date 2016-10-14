@@ -29,3 +29,10 @@ let ``Can not place an empty order`` () =
     Given (OpenedTab tab)
     |> When (PlaceOrder order)
     |> ShouldFailWith CanNotPlaceEmptyOrder
+
+[<Test>]
+let ``Can not place order on a closed tab`` () = 
+    let order = {order with Drinks = [coke]}
+    Given (ClosedTab (Some tab.Id))
+    |> When (PlaceOrder order)
+    |> ShouldFailWith CanNotOrderWithClosedTab
