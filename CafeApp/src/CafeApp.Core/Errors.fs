@@ -8,3 +8,4 @@ type Error =
     | OrderAlreadyPlaced
     | CanNotServeNonOrderedDrink of Drink
     | OrderAlreadyServed
+    | CanNotServeForNonPlacedOrder

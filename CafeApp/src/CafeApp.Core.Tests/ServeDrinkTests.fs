@@ -35,3 +35,9 @@ let ``Can not serve drink for already served order`` () =
     Given(ServedOrder emptyOrder)
     |> When (ServeDrink (lemonade, emptyOrder.Tab.Id))
     |> ShouldFailWith OrderAlreadyServed
+
+[<Test>]
+let ``Can not serve drink for non place order`` () =
+    Given(OpenedTab tab)
+    |> When (ServeDrink (lemonade, emptyOrder.Tab.Id))
+    |> ShouldFailWith CanNotServeForNonPlacedOrder
