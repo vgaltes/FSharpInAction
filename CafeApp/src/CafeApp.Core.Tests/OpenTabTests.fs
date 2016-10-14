@@ -7,12 +7,11 @@ open Events
 open Commands
 open States
 open Errors
+open TestData
 open System
 
 [<Test>]
 let ``Can open a new Tab`` () =
-    let tab = {Id = Guid.NewGuid(); TableNumber = 1}
-
     Given(ClosedTab None)
     |> When (OpenTab tab)
     |> ThenStateShouldBe (OpenedTab tab)
@@ -20,8 +19,6 @@ let ``Can open a new Tab`` () =
 
 [<Test>]
 let ``Cannot open an already opened tab`` () =
-    let tab = {Id = Guid.NewGuid(); TableNumber = 1}
-
     Given (OpenedTab tab)
     |> When (OpenTab tab)
     |> ShouldFailWith TabAlreadyOpened

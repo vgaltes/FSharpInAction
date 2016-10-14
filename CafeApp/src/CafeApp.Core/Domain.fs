@@ -28,7 +28,7 @@ type Order = {
 }
 
 type InProgressOrder = {
-    PlaceOrder: Order
+    PlacedOrder: Order
     ServedDrinks: Drink list
     ServedFoods: Food list
     PreparedFoods: Food list

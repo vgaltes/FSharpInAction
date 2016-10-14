@@ -8,17 +8,11 @@ open States
 open Commands
 open Events
 open Errors
-
-let tab = {Id = Guid.NewGuid(); TableNumber = 1}
-let coke = Drink{
-            MenuNumber = 1
-            Name = "Coke"
-            Price = 1.5m}
-let order = {Tab = tab; Foods = []; Drinks=[]}
+open TestData
 
 [<Test>]
 let ``Can place only drinks order`` () =
-    let order = {order with Drinks = [coke]}
+    let order = {emptyOrder with Drinks = [coke]}
     Given (OpenedTab tab)
     |> When (PlaceOrder order)
     |> ThenStateShouldBe (PlacedOrder order)
@@ -27,19 +21,19 @@ let ``Can place only drinks order`` () =
 [<Test>]
 let ``Can not place an empty order`` () =
     Given (OpenedTab tab)
-    |> When (PlaceOrder order)
+    |> When (PlaceOrder emptyOrder)
     |> ShouldFailWith CanNotPlaceEmptyOrder
 
 [<Test>]
 let ``Can not place order on a closed tab`` () = 
-    let order = {order with Drinks = [coke]}
+    let order = {emptyOrder with Drinks = [coke]}
     Given (ClosedTab (Some tab.Id))
     |> When (PlaceOrder order)
     |> ShouldFailWith CanNotOrderWithClosedTab
 
 [<Test>]
 let ``Can not place order multiple times`` () =
-    let order = {order with Drinks = [coke]}
+    let order = {emptyOrder with Drinks = [coke]}
     Given (PlacedOrder order)
     |> When (PlaceOrder order)
     |> ShouldFailWith OrderAlreadyPlaced
