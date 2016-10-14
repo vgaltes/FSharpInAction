@@ -31,3 +31,10 @@ let WithEvents expectedEvents actualEvents =
   | Some (actualEvents) ->
     actualEvents |> should equal expectedEvents
   | None -> None |> should equal expectedEvents
+
+let ShouldFailWith (expectedError: Error) (command, state) =
+    match evolve state command with
+    | Ok(r, _) ->
+        sprintf "Expected : %A, But Actual : %A" expectedError raise
+        |> Assert.Fail
+    | Bad errs -> errs.Head |> should equal expectedError
