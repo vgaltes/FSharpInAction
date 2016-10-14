@@ -36,3 +36,10 @@ let ``Can not place order on a closed tab`` () =
     Given (ClosedTab (Some tab.Id))
     |> When (PlaceOrder order)
     |> ShouldFailWith CanNotOrderWithClosedTab
+
+[<Test>]
+let ``Can not place order multiple times`` () =
+    let order = {order with Drinks = [coke]}
+    Given (PlacedOrder order)
+    |> When (PlaceOrder order)
+    |> ShouldFailWith OrderAlreadyPlaced
