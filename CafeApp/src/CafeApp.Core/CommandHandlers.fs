@@ -23,6 +23,7 @@ let handlePlaceOrder (order:Order) = function
         if isOrderEmpty order then fail CanNotPlaceEmptyOrder
         else
             [OrderPlaced order] |> ok
+    | ClosedTab _ -> fail CanNotOrderWithClosedTab
     | _ -> failwith "Todo"
 
 let execute state command =
