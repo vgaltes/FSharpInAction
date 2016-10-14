@@ -11,9 +11,14 @@ let handleOpenTab tab = function
 | ClosedTab _ -> [TabOpened tab] |> ok
 | _ -> TabAlreadyOpened |> fail
 
+let handlePlaceOrder order = function
+| OpenedTab _ -> [OrderPlaced order] |> ok
+| _ -> failwith "Todo"
+
 let execute state command =
     match command with
     | OpenTab tab -> handleOpenTab tab state
+    | PlaceOrder order -> handlePlaceOrder order state
     | _ -> failwith "Todo"
 
 let evolve state command =

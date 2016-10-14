@@ -20,5 +20,5 @@ let ``Can place only drinks order`` () =
     let order = {order with Drinks = [coke]}
     Given (OpenedTab tab)
     |> When (PlaceOrder order)
-    |> ThenStateShouldBe (PlaceOrder order)
+    |> ThenStateShouldBe (PlacedOrder order)
     |> WithEvents [OrderPlaced order]
