@@ -30,6 +30,8 @@ let handleServeDrink drink tabId = function
         if List.contains drink order.Drinks then
             [DrinkServed (drink,tabId)] |> ok
         else fail (CanNotServeNonOrderedDrink drink)
+    | ServedOrder order ->
+        fail OrderAlreadyServed
     | _ -> failwith "Todo"
 
 let execute state command =
