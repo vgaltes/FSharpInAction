@@ -3,3 +3,5 @@ nuget FAKE
 nuget FSharp.Core
 nuget FsUnit
 nuget nunit.runners
+
+github fsprojects/Chessie src/Chessie/ErrorHandling.fs
