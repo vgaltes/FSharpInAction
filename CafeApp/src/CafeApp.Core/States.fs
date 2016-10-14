@@ -15,4 +15,11 @@ let apply state event =
     match state, event with
     | ClosedTab _, TabOpened tab -> OpenedTab tab
     | OpenedTab _, OrderPlaced order -> PlacedOrder order
+    | PlacedOrder order, DrinkServed (drink, _) ->  
+        {
+            PlacedOrder = order
+            ServedDrinks = [drink]
+            PreparedFoods = []
+            ServedFoods = []
+        } |> OrderInProgress
     | _ -> state

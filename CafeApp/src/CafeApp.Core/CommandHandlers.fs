@@ -29,10 +29,16 @@ let handlePlaceOrder (order:Order) = function
         else [OrderPlaced order] |> ok
     | _ -> failwith "Todo"
 
+let handleServeDrink drink tabId = function
+    | PlacedOrder order ->
+        [DrinkServed (drink,tabId)] |> ok
+    | _ -> failwith "Todo"
+
 let execute state command =
     match command with
     | OpenTab tab -> handleOpenTab tab state
     | PlaceOrder order -> handlePlaceOrder order state
+    | ServeDrink (drink, tabId) -> handleServeDrink drink tabId state
     | _ -> failwith "Todo"
 
 let evolve state command =
