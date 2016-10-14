@@ -41,3 +41,9 @@ let ``Can not serve drink for non place order`` () =
     Given(OpenedTab tab)
     |> When (ServeDrink (lemonade, emptyOrder.Tab.Id))
     |> ShouldFailWith CanNotServeForNonPlacedOrder
+
+[<Test>]
+let ``Can not serve with closed tab`` () =
+    Given(ClosedTab (Some tab.Id))
+    |> When (ServeDrink (lemonade, emptyOrder.Tab.Id))
+    |> ShouldFailWith CanNotServeWithClosedTab

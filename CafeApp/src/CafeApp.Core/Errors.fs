@@ -9,3 +9,4 @@ type Error =
     | CanNotServeNonOrderedDrink of Drink
     | OrderAlreadyServed
     | CanNotServeForNonPlacedOrder
+    | CanNotServeWithClosedTab
