@@ -24,6 +24,9 @@ let handlePlaceOrder (order:Order) = function
         else
             [OrderPlaced order] |> ok
     | ClosedTab _ -> fail CanNotOrderWithClosedTab
+    | PlacedOrder existingOrder -> 
+        if existingOrder = order then fail OrderAlreadyPlaced
+        else [OrderPlaced order] |> ok
     | _ -> failwith "Todo"
 
 let execute state command =
