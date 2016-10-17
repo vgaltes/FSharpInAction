@@ -36,3 +36,9 @@ let ``Can not prepare food for served order`` () =
     Given(ServedOrder emptyOrder)
     |> When (PrepareFood (salad, emptyOrder.Tab.Id))
     |> ShouldFailWith (OrderAlreadyServed)
+
+[<Test>]
+let ``Can not prepare with closed tab`` () =
+    Given(ClosedTab None)
+    |> When (PrepareFood (salad, emptyOrder.Tab.Id))
+    |> ShouldFailWith CanNotPrepareWithClosedTab
