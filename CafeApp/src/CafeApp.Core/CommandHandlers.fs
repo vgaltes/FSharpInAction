@@ -61,6 +61,11 @@ let handlePrepareFood food tabId = function
         match food with
         | NonOrderedFood order _ -> fail (CanNotPrepareNonOrderedFood food)
         | _ -> [FoodPrepared(food, tabId)] |> ok
+    | OrderInProgress ipo ->
+        let order = ipo.PlacedOrder
+        match food with
+        | NonOrderedFood order _ -> fail (CanNotPrepareNonOrderedFood food)
+        | _ -> failwith "Todo"
     | ServedOrder order ->
         fail OrderAlreadyServed
     | ClosedTab _ -> fail CanNotPrepareWithClosedTab
