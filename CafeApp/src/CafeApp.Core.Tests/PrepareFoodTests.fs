@@ -56,3 +56,16 @@ let ``Can not prepare a non ordered food during order in progress`` () =
     Given(OrderInProgress orderInProgress)
     |> When (PrepareFood (pizza, order.Tab.Id))
     |> ShouldFailWith (CanNotPrepareNonOrderedFood pizza)
+    
+[<Test>]
+let ``Can not prepare already prepared food during order in progress`` () =
+    let order = {emptyOrder with Foods=[salad; pizza]}
+    let orderInProgress = {
+        PlacedOrder = order
+        ServedFoods = []
+        ServedDrinks = []
+        PreparedFoods = [salad]
+    }
+
+    Given(OrderInProgress orderInProgress)
+    |> When (PrepareFood (salad, order.Tab.Id))
