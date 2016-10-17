@@ -69,3 +69,4 @@ let ``Can not prepare already prepared food during order in progress`` () =
 
     Given(OrderInProgress orderInProgress)
     |> When (PrepareFood (salad, order.Tab.Id))
+    |> ShouldFailWith (CanNotPrepareAlreadyPreparedFood salad)

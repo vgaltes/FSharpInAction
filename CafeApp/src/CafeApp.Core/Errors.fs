@@ -12,3 +12,4 @@ type Error =
     | CanNotServeWithClosedTab
     | CanNotPrepareNonOrderedFood of Food
     | CanNotPrepareWithClosedTab
+    | CanNotPrepareAlreadyPreparedFood of Food
