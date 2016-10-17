@@ -60,3 +60,21 @@ let ``Can serve drink for order containing one drink`` () =
         DrinkServed (coke, order.Tab.Id)
         OrderServed (order, payment)
     ]
+
+[<Test>]
+let ``Remain in order in progress while serving a drink`` () =
+    let order = {emptyOrder with Drinks=[coke; lemonade; appleJuice]}
+    let orderInProgress = {
+        PlacedOrder = order
+        ServedDrinks = [coke]
+        PreparedFoods = []
+        ServedFoods = []
+    }
+    let expected = {orderInProgress with ServedDrinks = lemonade::orderInProgress.ServedDrinks}
+
+    Given (OrderInProgress orderInProgress)
+    |> When (ServeDrink (lemonade, order.Tab.Id))
+    |> ThenStateShouldBe(OrderInProgress expected)
+    |> WithEvents [DrinkServed (lemonade, order.Tab.Id)]
+
+    
