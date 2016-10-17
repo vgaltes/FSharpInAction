@@ -30,11 +30,20 @@ let (|NonOrderedDrink|_|) order drink =
     | false -> Some drink
     | true -> None
 
+let (|ServeDrinkCompletesOrder|_|) order drink =
+    match isServingDrinkCompletesOrder order drink with
+    | true -> Some drink
+    | false -> None
+
 let handleServeDrink drink tabId = function
     | PlacedOrder order ->
+        let event = DrinkServed (drink,tabId)
         match drink with
         | NonOrderedDrink order _ -> fail (CanNotServeNonOrderedDrink drink)
-        | _ -> [DrinkServed (drink,tabId)] |> ok
+        | ServeDrinkCompletesOrder order _ ->
+            let payment = {Tab = order.Tab; Amount = orderAmount order}
+            event::[OrderServed (order, payment)] |> ok
+        | _ -> [event] |> ok
     | ServedOrder order ->
         fail OrderAlreadyServed
     | OpenedTab _ -> fail CanNotServeForNonPlacedOrder
