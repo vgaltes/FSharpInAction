@@ -62,6 +62,7 @@ let handlePrepareFood food tabId = function
         | _ -> [FoodPrepared(food, tabId)] |> ok
     | ServedOrder order ->
         fail OrderAlreadyServed
+    | ClosedTab _ -> fail CanNotPrepareWithClosedTab
     | _ -> failwith "Todo"
 
 let execute state command =
