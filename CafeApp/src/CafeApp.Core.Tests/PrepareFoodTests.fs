@@ -30,3 +30,9 @@ let ``Can not prepare a non ordered food`` () =
     Given (PlacedOrder order)
     |> When (PrepareFood (salad, order.Tab.Id))
     |> ShouldFailWith (CanNotPrepareNonOrderedFood salad)
+
+[<Test>]
+let ``Can not prepare food for served order`` () =
+    Given(ServedOrder emptyOrder)
+    |> When (PrepareFood (salad, emptyOrder.Tab.Id))
+    |> ShouldFailWith (OrderAlreadyServed)
