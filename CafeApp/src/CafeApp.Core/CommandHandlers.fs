@@ -60,6 +60,8 @@ let handlePrepareFood food tabId = function
         match food with
         | NonOrderedFood order _ -> fail (CanNotPrepareNonOrderedFood food)
         | _ -> [FoodPrepared(food, tabId)] |> ok
+    | ServedOrder order ->
+        fail OrderAlreadyServed
     | _ -> failwith "Todo"
 
 let execute state command =
