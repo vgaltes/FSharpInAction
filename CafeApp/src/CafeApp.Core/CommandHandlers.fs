@@ -35,6 +35,11 @@ let (|ServeDrinkCompletesOrder|_|) order drink =
     | true -> Some drink
     | false -> None
 
+let (|NonOrderedFood|_|) order food =
+    match List.contains food order.Foods with 
+    | false -> Some food
+    | true -> None
+
 let handleServeDrink drink tabId = function
     | PlacedOrder order ->
         let event = DrinkServed (drink,tabId)
@@ -52,7 +57,9 @@ let handleServeDrink drink tabId = function
 
 let handlePrepareFood food tabId = function
     | PlacedOrder order ->
-        [FoodPrepared(food, tabId)] |> ok
+        match food with
+        | NonOrderedFood order _ -> fail (CanNotPrepareNonOrderedFood food)
+        | _ -> [FoodPrepared(food, tabId)] |> ok
     | _ -> failwith "Todo"
 
 let execute state command =
