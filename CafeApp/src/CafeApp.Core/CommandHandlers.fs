@@ -49,11 +49,12 @@ let handleServeDrink drink tabId = function
             let payment = {Tab = order.Tab; Amount = orderAmount order}
             event::[OrderServed (order, payment)] |> ok
         | _ -> [event] |> ok
+    | OrderInProgress order ->
+        [DrinkServed(drink, tabId)] |> ok
     | ServedOrder order ->
         fail OrderAlreadyServed
     | OpenedTab _ -> fail CanNotServeForNonPlacedOrder
     | ClosedTab _ -> fail CanNotServeWithClosedTab
-    | _ -> failwith "Todo"
 
 let handlePrepareFood food tabId = function
     | PlacedOrder order ->
