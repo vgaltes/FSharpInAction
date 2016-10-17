@@ -23,3 +23,10 @@ let ``Can prepare food`` () =
     |> When (PrepareFood (salad, order.Tab.Id))
     |> ThenStateShouldBe(OrderInProgress expected)
     |> WithEvents [FoodPrepared (salad, order.Tab.Id)]
+
+[<Test>]
+let ``Can not prepare a non ordered food`` () =
+    let order = {emptyOrder with Foods=[pizza]}
+    Given (PlacedOrder order)
+    |> When (PrepareFood (salad, order.Tab.Id))
+    |> ShouldFailWith (CanNotPrepareNonOrderedFood salad)
