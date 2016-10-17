@@ -77,12 +77,18 @@ let handlePrepareFood food tabId = function
     | ClosedTab _ -> fail CanNotPrepareWithClosedTab
     | _ -> failwith "Todo"
 
+let handleServeFood food tabId = function
+    | OrderInProgress ipo ->
+        [FoodServed (food,tabId)] |> ok
+    | _ -> failwith "Todo"
+
 let execute state command =
     match command with
     | OpenTab tab -> handleOpenTab tab state
     | PlaceOrder order -> handlePlaceOrder order state
     | ServeDrink (drink, tabId) -> handleServeDrink drink tabId state
     | PrepareFood (food, tabId) -> handlePrepareFood food tabId state
+    | ServeFood (food, tabId) -> handleServeFood food tabId state
     | _ -> failwith "Todo"
 
 let evolve state command =

@@ -51,6 +51,7 @@
     <Compile Include="PlaceOrderTests.fs" />
     <Compile Include="ServeDrinkTests.fs" />
     <Compile Include="PrepareFoodTests.fs" />
+    <Compile Include="ServeFoodTests.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Choose>
